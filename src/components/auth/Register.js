@@ -13,7 +13,7 @@ function Register() {
   const [isLoading, setIsLoading] = useState(false);
   
   const { register } = useAuth();
-  const { closeModal } = useModal();
+  const { openModal, closeModal } = useModal();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,46 +35,81 @@ function Register() {
     }
   };
 
+  const handleShowLogin = () => {
+    import('./Login').then(module => {
+      openModal(<module.default />);
+    });
+  };
+
   return (
     <div className="auth-form">
-      <h2>Create Account</h2>
-      {error && <div className="error-message">{error}</div>}
+      <h2 className="auth-title">Create Account</h2>
+      <p className="auth-subtitle">Sign up to get started</p>
+      
+      {error && (
+        <div className="auth-error">
+          {error}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
+        <div className="auth-input-group">
+          <label className="auth-label">Email Address</label>
           <input
+            className="auth-input"
             type="email"
             value={formData.email}
             onChange={(e) => setFormData({...formData, email: e.target.value})}
-            placeholder="Email"
+            placeholder="Enter your email"
             required
+            autoComplete="email"
           />
         </div>
-        <div className="form-group">
+
+        <div className="auth-input-group">
+          <label className="auth-label">Password</label>
           <input
+            className="auth-input"
             type="password"
             value={formData.password}
             onChange={(e) => setFormData({...formData, password: e.target.value})}
-            placeholder="Password"
+            placeholder="Create a password"
             required
+            autoComplete="new-password"
           />
         </div>
-        <div className="form-group">
+
+        <div className="auth-input-group">
+          <label className="auth-label">Confirm Password</label>
           <input
+            className="auth-input"
             type="password"
             value={formData.confirmPassword}
             onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
-            placeholder="Confirm Password"
+            placeholder="Confirm your password"
             required
+            autoComplete="new-password"
           />
         </div>
+
         <button 
           type="submit" 
-          className="auth-submit"
+          className="auth-button"
           disabled={isLoading}
         >
-          {isLoading ? 'Creating Account...' : 'Create Account'}
+          {isLoading ? "Creating account..." : "Create account"}
         </button>
       </form>
+
+      <div className="auth-switch">
+        Already have an account?
+        <button 
+          onClick={handleShowLogin} 
+          className="auth-switch-link"
+        >
+          Sign in
+        </button>
+      </div>
     </div>
   );
 }

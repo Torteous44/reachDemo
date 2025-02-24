@@ -37,53 +37,56 @@ function LandingPage() {
 
       <div className="hero-section">
         <div className="hero-content">
-          <div className="hero-logo">
-            <img src="/assets/logo.svg" alt="Reach" />
+          <div className="hero-left">
+            <img src="/assets/logo.svg" alt="Reach" className="large-logo" />
           </div>
-          <h1 className="hero-title">
-            Reach <span className="emphasis">Demo</span>
-          </h1>
-          
-          <div className="hero-actions">
-            <button 
-              className="hero-button" 
-              onClick={handleShowLogin}
-            >
-              Sign in
-            </button>
-            <button 
-              className="hero-button primary" 
-              onClick={handleShowRegister}
-            >
-              Create account
-            </button>
+          <div className="hero-right">
+            <h1 className="hero-title">
+              Reach <span className="emphasis">Demo</span>
+            </h1>
+            <p className="hero-description">
+            AI-driven interviews and high quality data insights faster and cheaper than traditional research methods.            </p>
+            <div className="hero-actions">
+              <button 
+                className="hero-button" 
+                onClick={handleShowLogin}
+              >
+                Sign in
+              </button>
+              <button 
+                className="hero-button primary" 
+                onClick={handleShowRegister}
+              >
+                Create account
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       <div className="demo-info">
         <div className="demo-info-content">
-          <h2>About This Demo</h2>
+          <h2 className="demo-info-title">About This Demo</h2>
           <div className="demo-features">
             <div className="feature-item">
               <h3>Create Templates</h3>
-              <p>Design and manage interview templates with custom questions and flows</p>
+              <p>Design custom interview flows and questions</p>
             </div>
             <div className="feature-item">
               <h3>AI Interviews</h3>
-              <p>Experience real-time AI-driven interviews with natural conversations</p>
+              <p>Experience natural conversations with our AI</p>
             </div>
             <div className="feature-item">
               <h3>Voice Interaction</h3>
-              <p>Test our advanced voice recognition and response capabilities</p>
+              <p>Test our voice recognition capabilities</p>
             </div>
             <div className="feature-item">
               <h3>Review Insights</h3>
-              <p>Access detailed transcripts and AI-generated insights from interviews</p>
+              <p>Get AI-generated feedback and transcripts</p>
             </div>
           </div>
           <div className="demo-note">
-            <p>This is a limited demonstration version. For full access to Reach's features, please contact our team.</p>
+            <p>This is a limited demonstration. For full access, please contact our team.</p>
           </div>
         </div>
       </div>

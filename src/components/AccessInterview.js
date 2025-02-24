@@ -22,19 +22,25 @@ function AccessInterview() {
       <Navbar />
       <div className="access-container">
         <div className="access-card">
-          <div className="card-header">
-            <button 
-              onClick={() => navigate('/dashboard')} 
-              className="back-button"
+          <button 
+            onClick={() => navigate('/dashboard')} 
+            className="back-button"
+          >
+            <svg 
+              width="20" 
+              height="20" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
             >
-              <img 
-                src="/assets/arrow_back.svg" 
-                alt="Back"
-                className="back-icon"
-              />
-            </button>
-            <h1>Access Interview</h1>
-          </div>
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+          </button>
+          
+          <h1>Access Interview</h1>
           
           <p className="access-description">
             Enter the 4-character code provided to you

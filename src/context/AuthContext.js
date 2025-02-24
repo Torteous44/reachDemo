@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Check if user is logged in on mount
-    const token = localStorage.getItem('jwt_token');
+    const token = localStorage.getItem('token');
     const userInfo = localStorage.getItem('user_info');
     
     if (token && userInfo) {
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       const data = await resp.json();
-      localStorage.setItem("jwt_token", data.access_token);
+      localStorage.setItem("token", data.access_token);
       
       if (data.user) {
         localStorage.setItem("user_info", JSON.stringify(data.user));
@@ -44,12 +44,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (userData) => {
+  const register = async (email, password) => {
     try {
       const resp = await fetch("https://demobackend-p2e1.onrender.com/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData)
+        body: JSON.stringify({ email, password })
       });
 
       if (!resp.ok) {
@@ -57,20 +57,22 @@ export const AuthProvider = ({ children }) => {
         throw new Error(errorData.detail || "Registration failed");
       }
 
-      // Auto-login after registration
-      const loginResult = await login(userData.email, userData.password);
-      if (!loginResult.success) {
-        throw new Error(loginResult.error);
+      const data = await resp.json();
+      localStorage.setItem("token", data.access_token);
+      
+      if (data.user) {
+        localStorage.setItem("user_info", JSON.stringify(data.user));
+        setUser(data.user);
       }
 
-      return { success: true };
+      return data;
     } catch (err) {
-      return { success: false, error: err.message };
+      throw err;
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('token');
     localStorage.removeItem('user_info');
     setUser(null);
   };

@@ -29,7 +29,7 @@ function RealtimeConnect() {
     }
 
     appendLog("Starting connection process...");
-    const token = localStorage.getItem("jwt_token");
+    const token = localStorage.getItem("token");
     if (!token) {
       appendLog("Not logged in");
       return alert("You must be logged in first.");
@@ -178,7 +178,7 @@ function RealtimeConnect() {
       }
 
       // Send end session request to backend
-      const token = localStorage.getItem('jwt_token');
+      const token = localStorage.getItem('token');
       await fetch(`https://demobackend-p2e1.onrender.com/sessions/${sessionId}/end`, {
         method: 'POST',
         headers: {

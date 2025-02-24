@@ -26,11 +26,17 @@ function Register() {
     setError('');
 
     try {
-      await register(formData.email, formData.password);
-      closeModal();
-      window.location.href = '/dashboard';
+      const result = await register(formData.email, formData.password);
+      if (result.access_token) {
+        localStorage.setItem('token', result.access_token);
+        closeModal();
+        window.location.href = '/dashboard';
+      } else {
+        setError('Registration successful but login failed');
+      }
     } catch (err) {
       setError('Error creating account');
+      console.error('Registration error:', err);
     } finally {
       setIsLoading(false);
     }

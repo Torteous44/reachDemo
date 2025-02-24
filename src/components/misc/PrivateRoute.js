@@ -10,7 +10,7 @@ function PrivateRoute({ children }) {
   }
 
   // Check both user and token
-  const token = localStorage.getItem('jwt_token');
+  const token = localStorage.getItem('token');
   const userInfo = localStorage.getItem('user_info');
 
   if (!user && !token && !userInfo) {

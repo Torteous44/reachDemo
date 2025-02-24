@@ -6,7 +6,7 @@ function Navbar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('token');
     navigate('/');
   };
 

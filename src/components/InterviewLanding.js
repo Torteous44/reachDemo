@@ -14,7 +14,7 @@ function InterviewLanding() {
   useEffect(() => {
     const fetchInterview = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/interviews/code/${hexCode}`, {
+        const response = await fetch(`https://demobackend-p2e1.onrender.com/interviews/code/${hexCode}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ function InterviewLanding() {
   const handleStart = async () => {
     setIsStarting(true);
     try {
-      const response = await fetch('http://localhost:8000/sessions/start', {
+      const response = await fetch('https://demobackend-p2e1.onrender.com/sessions/start', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`,

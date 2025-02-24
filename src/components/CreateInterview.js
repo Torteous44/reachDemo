@@ -55,7 +55,7 @@ function CreateInterview() {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/interviews/', {
+      const response = await fetch('https://demobackend-p2e1.onrender.com/interviews/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`,

@@ -39,7 +39,7 @@ function RealtimeConnect() {
       setIsConnected(true);
       // 1) Get ephemeral token from your backend
       appendLog("Fetching ephemeral token...");
-      const rtResp = await fetch(`http://localhost:8000/realtime/token?session_id=${sessionId}`, {
+      const rtResp = await fetch(`https://demobackend-p2e1.onrender.com/realtime/token?session_id=${sessionId}`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -179,7 +179,7 @@ function RealtimeConnect() {
 
       // Send end session request to backend
       const token = localStorage.getItem('jwt_token');
-      await fetch(`http://localhost:8000/sessions/${sessionId}/end`, {
+      await fetch(`https://demobackend-p2e1.onrender.com/sessions/${sessionId}/end`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

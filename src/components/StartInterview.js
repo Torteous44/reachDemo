@@ -13,7 +13,7 @@ function StartInterview() {
   useEffect(() => {
     const fetchInterview = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/interviews/access/${hexCode}`);
+        const response = await fetch(`https://demobackend-p2e1.onrender.com/interviews/access/${hexCode}`);
         const data = await response.json();
         
         if (response.ok) {
@@ -36,7 +36,7 @@ function StartInterview() {
   const handleStart = async () => {
     setIsStarting(true);
     try {
-      const response = await fetch('http://localhost:8000/sessions/start', {
+      const response = await fetch('https://demobackend-p2e1.onrender.com/sessions/start', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

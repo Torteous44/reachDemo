@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ModalProvider } from './context/ModalContext';
 import { useAuth } from './context/AuthContext';
@@ -12,9 +12,10 @@ import PrivateRoute from './components/PrivateRoute';
 
 function AppRoutes() {
   const { user } = useAuth();
+  const location = useLocation();
 
   // Redirect authenticated users away from landing page
-  if (user && window.location.pathname === '/') {
+  if (user && location.pathname === '/') {
     return <Navigate to="/dashboard" replace />;
   }
 

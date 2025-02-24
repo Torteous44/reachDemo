@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Login from './Login';
-import Register from './Register';
-import { useAuth } from '../context/AuthContext';
-import { useModal } from '../context/ModalContext';
-import '../styles/LandingPage.css';
+import Login from '../auth/Login';
+import Register from '../auth/Register';
+import { useAuth } from '../../context/AuthContext';
+import { useModal } from '../../context/ModalContext';
+import '../../styles/LandingPage.css';
 
 function LandingPage() {
   const { user } = useAuth();

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { useAuth } from '../context/AuthContext';
-import { useModal } from '../context/ModalContext';
-import "../styles/AuthModal.css";
-
+import { useAuth } from '../../context/AuthContext';
+import { useModal } from '../../context/ModalContext';
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

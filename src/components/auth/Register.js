@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { useModal } from '../context/ModalContext';
-import "../styles/AuthModal.css";
-import { BrowserRouter } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { useModal } from '../../context/ModalContext';
+import "../../styles/AuthModal.css";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -78,16 +76,6 @@ function Register() {
         </button>
       </form>
     </div>
-  );
-}
-
-function RegisterWithRouter() {
-  const navigate = useNavigate();
-
-  return (
-    <BrowserRouter>
-      <Register />
-    </BrowserRouter>
   );
 }
 

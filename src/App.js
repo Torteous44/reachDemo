@@ -1,12 +1,12 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
-import LandingPage from './components/LandingPage';
-import Dashboard from './components/Dashboard';
+import LandingPage from './components/misc/LandingPage';
+import Dashboard from './components/misc/Dashboard';
 import CreateInterview from './components/CreateInterview';
 import AccessInterview from './components/AccessInterview';
 import InterviewLanding from './components/InterviewLanding';
-import RealtimeConnect from './components/RealtimeConnect';
-import PrivateRoute from './components/PrivateRoute';
+import RealtimeConnect from './components/conversation/RealtimeConnect';
+import PrivateRoute from './components/misc/PrivateRoute';
 
 function App() {
   const { user } = useAuth();

@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "../styles/SharedStyles.css";
+import { useAuth } from '../context/AuthContext';
+import { useModal } from '../context/ModalContext';
+import "../styles/AuthModal.css";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const { login } = useAuth();
+  const { openModal, closeModal } = useModal();
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -14,49 +17,46 @@ function Login() {
     setError("");
 
     try {
-      const resp = await fetch("http://localhost:8000/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-      });
-
-      if (!resp.ok) {
-        const errorData = await resp.json();
-        throw new Error(errorData.detail || "Invalid credentials");
-      }
-
-      const data = await resp.json();
-      localStorage.setItem("jwt_token", data.access_token);
+      const result = await login(email, password);
+      console.log("Login result:", result); // Debug log
       
-      // Optional: Store user info if provided by the API
-      if (data.user) {
-        localStorage.setItem("user_info", JSON.stringify(data.user));
+      if (result.success) {
+        closeModal();
+        // Force a reload to ensure fresh state
+        window.location.href = '/dashboard';
+      } else {
+        setError(result.error || "Failed to login");
       }
-
-      // Use window.location instead of navigate
-      window.location.href = "/dashboard";
     } catch (err) {
-      setError(err.message || "Failed to login. Please try again.");
+      console.error("Login error:", err); // Debug log
+      setError("Failed to login. Please try again.");
     } finally {
       setIsLoading(false);
     }
   }
 
+  const handleShowRegister = () => {
+    import('./Register').then(module => {
+      openModal(<module.default />);
+    });
+  };
+
   return (
-    <div className="form-container">
-      <h2 className="form-title">Welcome Back</h2>
+    <div className="auth-form">
+      <h2 className="auth-title">Welcome back</h2>
+      <p className="auth-subtitle">Sign in to your account to continue</p>
       
       {error && (
-        <div className="error-message">
+        <div className="auth-error">
           {error}
         </div>
       )}
 
       <form onSubmit={handleLogin}>
-        <div className="form-group">
-          <label className="form-label">Email Address</label>
+        <div className="auth-input-group">
+          <label className="auth-label">Email Address</label>
           <input 
-            className="form-input"
+            className="auth-input"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -66,10 +66,10 @@ function Login() {
           />
         </div>
 
-        <div className="form-group">
-          <label className="form-label">Password</label>
+        <div className="auth-input-group">
+          <label className="auth-label">Password</label>
           <input 
-            className="form-input"
+            className="auth-input"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -81,23 +81,22 @@ function Login() {
 
         <button 
           type="submit" 
-          className="form-button"
+          className="auth-button"
           disabled={isLoading}
         >
-          {isLoading ? "Logging in..." : "Login"}
+          {isLoading ? "Signing in..." : "Sign in"}
         </button>
-
-        <Link to="/forgot-password" className="form-link">
-          Forgot your password?
-        </Link>
-
-        <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-          Don't have an account?{' '}
-          <Link to="/register" className="form-link" style={{ display: 'inline' }}>
-            Sign up
-          </Link>
-        </div>
       </form>
+
+      <div className="auth-switch">
+        Don't have an account?
+        <button 
+          onClick={handleShowRegister} 
+          className="auth-switch-link"
+        >
+          Create account
+        </button>
+      </div>
     </div>
   );
 }

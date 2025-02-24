@@ -1,160 +1,252 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
-import "../styles/CreateInterview.css";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Navbar from './Navbar';
+import '../styles/CreateInterview.css';
 
 function CreateInterview() {
-  const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [scope, setScope] = useState("");
-  const [questions, setQuestions] = useState([""]);
+  const [formData, setFormData] = useState({
+    name: '',
+    scope: '',
+    description: '',
+    questions: ['']  // Start with one empty question
+  });
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [error, setError] = useState('');
+  const [hexCode, setHexCode] = useState('');
+  const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
 
-  const addQuestion = () => {
-    setQuestions([...questions, ""]);
+  const handleAddQuestion = () => {
+    setFormData(prev => ({
+      ...prev,
+      questions: [...prev.questions, '']
+    }));
   };
 
-  const updateQuestion = (index, value) => {
-    const newQuestions = [...questions];
+  const handleRemoveQuestion = (indexToRemove) => {
+    if (formData.questions.length > 1) {
+      setFormData(prev => ({
+        ...prev,
+        questions: prev.questions.filter((_, index) => index !== indexToRemove)
+      }));
+    }
+  };
+
+  const handleQuestionChange = (index, value) => {
+    const newQuestions = [...formData.questions];
     newQuestions[index] = value;
-    setQuestions(newQuestions);
+    setFormData(prev => ({
+      ...prev,
+      questions: newQuestions
+    }));
   };
 
-  const removeQuestion = (index) => {
-    const newQuestions = questions.filter((_, i) => i !== index);
-    setQuestions(newQuestions);
-  };
-
-  async function handleCreate(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
-    setSuccess("");
+    setError('');
 
-    const token = localStorage.getItem("jwt_token");
-    if (!token) {
-      setError("You must be logged in first.");
+    const filteredQuestions = formData.questions.filter(q => q.trim() !== '');
+    
+    if (filteredQuestions.length === 0) {
+      setError('Please add at least one question');
       setIsLoading(false);
       return;
     }
 
-    const filteredQuestions = questions.filter(q => q.trim() !== "");
-
     try {
-      const resp = await fetch("http://localhost:8000/interviews", {
-        method: "POST",
+      const response = await fetch('http://localhost:8000/interviews/', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`,
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          name,
-          scope,
+          ...formData,
           questions: filteredQuestions
         })
       });
+
+      const data = await response.json();
       
-      if (!resp.ok) throw new Error("Failed to create interview");
-      
-      const data = await resp.json();
-      setSuccess(`Interview created successfully with ID ${data.id}`);
-      setName("");
-      setScope("");
-      setQuestions([""]);
+      if (!response.ok) {
+        throw new Error(data.detail || 'Failed to create interview');
+      }
+
+      setHexCode(data.hex_code);
     } catch (err) {
       setError(err.message);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(hexCode);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
 
   return (
     <div className="create-interview-wrapper">
       <Navbar />
-      
-      <div className="create-interview-container">
-        <button 
-          className="back-arrow" 
-          onClick={() => navigate('/dashboard')}
-          aria-label="Back to Dashboard"
-        >
-          ←
-        </button>
-        
-        <div className="create-interview-header">
-          <h2>Create New Interview</h2>
-          <p>Set up your interview template with questions</p>
-        </div>
-
-        <div className="create-interview-form">
-          <form onSubmit={handleCreate}>
-            <div className="form-section">
-              <label>Interview Name</label>
-              <input 
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Enter interview name"
-                required
+      <div className="create-interview">
+        <div className="create-container">
+          <div className="card-header">
+            <button 
+              onClick={() => navigate('/dashboard')} 
+              className="back-button"
+            >
+              <img 
+                src="/assets/arrow_back.svg" 
+                alt="Back"
+                className="back-icon"
               />
-            </div>
-
-            <div className="form-section">
-              <label>Interview Scope</label>
-              <textarea 
-                value={scope}
-                onChange={(e) => setScope(e.target.value)}
-                placeholder="Describe what you want to learn from this interview"
-                rows="3"
-              />
-            </div>
-
-            <div className="form-section">
-              <label>Questions</label>
-              <div className="questions-container">
-                {questions.map((question, index) => (
-                  <div key={index} className="question-item">
-                    <input
-                      type="text"
-                      value={question}
-                      onChange={(e) => updateQuestion(index, e.target.value)}
-                      placeholder={`Question ${index + 1}`}
-                    />
-                    {questions.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeQuestion(index)}
-                        className="remove-question"
-                      >
-                        ×
-                      </button>
-                    )}
-                  </div>
-                ))}
+            </button>
+            <h1>Create Interview</h1>
+          </div>
+          
+          {error && <div className="error-message">{error}</div>}
+          
+          {hexCode ? (
+            <div className="success-card">
+              <div className="success-icon">
+                <i className="fas fa-check-circle"></i>
               </div>
+              <h2>Interview Created!</h2>
               
-              <button
-                type="button"
-                onClick={addQuestion}
-                className="add-question"
+              <div className="hex-code-display">
+                <div className="hex-code-container">
+                  <span className="hex-code">{hexCode}</span>
+                  <button 
+                    onClick={handleCopy}
+                    className="copy-button"
+                    data-tooltip={copied ? 'Copied!' : 'Copy to clipboard'}
+                  >
+                    <img 
+                      src="/assets/copy.svg" 
+                      alt="Copy"
+                      className="copy-icon"
+                    />
+                    Copy
+                  </button>
+                </div>
+              </div>
+
+              <button 
+                onClick={() => navigate('/dashboard')}
+                className="return-button"
               >
-                + Add Question
+                Return to Dashboard
               </button>
             </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="create-form">
+              <div className="form-group">
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData(prev => ({
+                    ...prev,
+                    name: e.target.value
+                  }))}
+                  placeholder="Interview Name"
+                  required
+                />
+              </div>
 
-            {error && <div className="error-message">{error}</div>}
-            {success && <div className="success-message">{success}</div>}
+              <div className="form-group">
+                <input
+                  type="text"
+                  value={formData.scope}
+                  onChange={(e) => setFormData(prev => ({
+                    ...prev,
+                    scope: e.target.value
+                  }))}
+                  placeholder="Interview Scope"
+                  required
+                />
+              </div>
 
-            <button 
-              type="submit" 
-              className="create-button"
-              disabled={isLoading}
-            >
-              {isLoading ? "Creating..." : "Create Interview"}
-            </button>
-          </form>
+              <div className="form-group">
+                <textarea
+                  value={formData.description}
+                  onChange={(e) => setFormData(prev => ({
+                    ...prev,
+                    description: e.target.value
+                  }))}
+                  placeholder="Interview Description"
+                  rows="3"
+                  required
+                />
+              </div>
+
+              <div className="questions-section">
+                <div className="questions-header">
+                  <h2>Questions</h2>
+                  <span className="question-count">
+                    {formData.questions.length} {formData.questions.length === 1 ? 'Question' : 'Questions'}
+                  </span>
+                </div>
+                
+                <div className="questions-list">
+                  {formData.questions.map((question, index) => (
+                    <div 
+                      key={index} 
+                      className={`question-item ${question.trim() ? 'filled' : ''}`}
+                    >
+                      <div className="question-number">{index + 1}</div>
+                      <input
+                        type="text"
+                        value={question}
+                        onChange={(e) => handleQuestionChange(index, e.target.value)}
+                        placeholder="Type your question here"
+                        required
+                      />
+                      {formData.questions.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveQuestion(index)}
+                          className="remove-question"
+                          aria-label="Remove question"
+                        >
+                          <img 
+                            src="/assets/remove.svg" 
+                            alt="Remove"
+                            className="remove-icon"
+                          />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                
+                <button 
+                  type="button"
+                  onClick={handleAddQuestion}
+                  className="add-question"
+                >
+                  <img 
+                    src="/assets/plus.svg" 
+                    alt="Add"
+                    className="add-icon"
+                  />
+                </button>
+              </div>
+
+              <button
+                type="submit"
+                className="submit-button"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Creating...' : 'Create Interview'}
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </div>

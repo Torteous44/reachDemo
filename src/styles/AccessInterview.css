@@ -1,0 +1,164 @@
+.access-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.access-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: #f8f9fa;
+}
+
+.access-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.access-card h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.access-description {
+  color: #666;
+  font-size: 0.875rem;
+  margin-bottom: 2rem;
+}
+
+.access-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.code-input-container {
+  position: relative;
+}
+
+.code-input-container input {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1.25rem;
+  text-align: center;
+  letter-spacing: 0.25em;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+}
+
+.code-input-container input:focus {
+  outline: none;
+  border-color: #1098F7;
+  box-shadow: 0 0 0 3px rgba(16, 152, 247, 0.1);
+}
+
+.code-input-container input.error {
+  border-color: #dc2626;
+}
+
+.error-message {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1.5rem;
+  color: #dc2626;
+  font-size: 0.75rem;
+}
+
+.access-button {
+  background: #1098F7;
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.access-button:hover {
+  background: #0d86e1;
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.back-button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+  font-size: 0.875rem;
+  padding: 0.5rem;
+  margin: -0.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  color: #1098F7;
+}
+
+.back-button .back-icon {
+  width: 20px;
+  height: 20px;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover .back-icon {
+  filter: invert(48%) sepia(85%) saturate(2728%) hue-rotate(190deg) brightness(97%) contrast(101%);
+}
+
+.card-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.access-description {
+  color: #666;
+  font-size: 0.875rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .access-container {
+    padding: 1rem;
+  }
+
+  .access-card {
+    padding: 1.5rem;
+  }
+
+  .card-header {
+    margin-bottom: 2rem;
+  }
+
+  .back-button {
+    position: static;
+    margin-bottom: 1rem;
+    justify-content: center;
+  }
+} 

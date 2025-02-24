@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import "../styles/SharedStyles.css";
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useModal } from '../context/ModalContext';
+import "../styles/AuthModal.css";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -10,6 +13,9 @@ function Register() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const { register } = useAuth();
+  const { openModal, closeModal } = useModal();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,60 +45,42 @@ function Register() {
     setError("");
 
     try {
-      const resp = await fetch("http://localhost:8000/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-          name: formData.name
-        })
-      });
-
-      if (!resp.ok) {
-        const errorData = await resp.json();
-        throw new Error(errorData.detail || "Registration failed");
-      }
-
-      // Auto-login after registration
-      const loginResp = await fetch("http://localhost:8000/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password
-        })
-      });
-
-      if (loginResp.ok) {
-        const loginData = await loginResp.json();
-        localStorage.setItem("jwt_token", loginData.access_token);
-        window.location.href = "/dashboard";
+      const result = await register(formData);
+      if (result.success) {
+        closeModal();
+        navigate('/dashboard');
       } else {
-        window.location.href = "/login";
+        setError(result.error || "Registration failed");
       }
     } catch (err) {
-      setError(err.message || "Error registering user");
+      setError("Error registering user");
     } finally {
       setIsLoading(false);
     }
   }
 
+  const handleShowLogin = () => {
+    import('./Login').then(module => {
+      openModal(<module.default />);
+    });
+  };
+
   return (
-    <div className="form-container">
-      <h2 className="form-title">Create Account</h2>
+    <div className="auth-form">
+      <h2 className="auth-title">Create account</h2>
+      <p className="auth-subtitle">Sign up to get started</p>
       
       {error && (
-        <div className="error-message">
+        <div className="auth-error">
           {error}
         </div>
       )}
 
       <form onSubmit={handleRegister}>
-        <div className="form-group">
-          <label className="form-label">Full Name</label>
+        <div className="auth-input-group">
+          <label className="auth-label">Full Name</label>
           <input 
-            className="form-input"
+            className="auth-input"
             type="text"
             name="name"
             value={formData.name}
@@ -103,10 +91,10 @@ function Register() {
           />
         </div>
 
-        <div className="form-group">
-          <label className="form-label">Email Address</label>
+        <div className="auth-input-group">
+          <label className="auth-label">Email Address</label>
           <input 
-            className="form-input"
+            className="auth-input"
             type="email"
             name="email"
             value={formData.email}
@@ -117,10 +105,10 @@ function Register() {
           />
         </div>
 
-        <div className="form-group">
-          <label className="form-label">Password</label>
+        <div className="auth-input-group">
+          <label className="auth-label">Password</label>
           <input 
-            className="form-input"
+            className="auth-input"
             type="password"
             name="password"
             value={formData.password}
@@ -129,15 +117,12 @@ function Register() {
             required
             autoComplete="new-password"
           />
-          <small style={{ color: '#666', marginTop: '0.25rem', display: 'block' }}>
-            Password must be at least 8 characters long
-          </small>
         </div>
 
-        <div className="form-group">
-          <label className="form-label">Confirm Password</label>
+        <div className="auth-input-group">
+          <label className="auth-label">Confirm Password</label>
           <input 
-            className="form-input"
+            className="auth-input"
             type="password"
             name="confirmPassword"
             value={formData.confirmPassword}
@@ -150,19 +135,22 @@ function Register() {
 
         <button 
           type="submit" 
-          className="form-button"
+          className="auth-button"
           disabled={isLoading}
         >
-          {isLoading ? "Creating Account..." : "Create Account"}
+          {isLoading ? "Creating account..." : "Create account"}
         </button>
-
-        <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-          Already have an account?{' '}
-          <a href="/login" className="form-link" style={{ display: 'inline' }}>
-            Sign in
-          </a>
-        </div>
       </form>
+
+      <div className="auth-switch">
+        Already have an account?
+        <button 
+          onClick={handleShowLogin} 
+          className="auth-switch-link"
+        >
+          Sign in
+        </button>
+      </div>
     </div>
   );
 }

@@ -1,24 +1,61 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { ModalProvider } from './context/ModalContext';
+import { useAuth } from './context/AuthContext';
 import LandingPage from './components/LandingPage';
-import Login from './components/Login';
-import Register from './components/Register';
 import Dashboard from './components/Dashboard';
-import StartInterview from './components/StartInterview';
-import RealtimeConnect from './components/RealtimeConnect';
 import CreateInterview from './components/CreateInterview';
+import AccessInterview from './components/AccessInterview';
+import InterviewLanding from './components/InterviewLanding';
+import RealtimeConnect from './components/RealtimeConnect';
+import PrivateRoute from './components/PrivateRoute';
 
-function App() {
+function AppRoutes() {
+  const { user } = useAuth();
+
+  // Redirect authenticated users away from landing page
+  if (user && window.location.pathname === '/') {
+    return <Navigate to="/dashboard" replace />;
+  }
+
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/interviews/create" element={<CreateInterview />} />
-      <Route path="/interviews/start" element={<StartInterview />} />
-      <Route path="/realtime/:sessionId" element={<RealtimeConnect />} />
+      
+      {/* Protected Routes */}
+      <Route path="/dashboard" element={
+        <PrivateRoute>
+          <Dashboard />
+        </PrivateRoute>
+      } />
+      
+      <Route path="/create-interview" element={
+        <PrivateRoute>
+          <CreateInterview />
+        </PrivateRoute>
+      } />
+
+      {/* Session Route */}
+      <Route path="/session/:sessionId" element={
+        <PrivateRoute>
+          <RealtimeConnect />
+        </PrivateRoute>
+      } />
+
+      {/* Public Interview Routes */}
+      <Route path="/access" element={<AccessInterview />} />
+      <Route path="/interview/:hexCode" element={<InterviewLanding />} />
     </Routes>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <ModalProvider>
+        <AppRoutes />
+      </ModalProvider>
+    </AuthProvider>
   );
 }
 

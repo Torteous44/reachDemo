@@ -1,7 +1,7 @@
 .dashboard-wrapper {
   min-height: 100vh;
-  background-color: #f8f9fa;
-  padding-top: 80px; /* Account for fixed navbar */
+  display: flex;
+  flex-direction: column;
 }
 
 .dashboard-nav {
@@ -50,9 +50,11 @@
 }
 
 .dashboard-container {
+  flex: 1;
+  padding: 3rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
 }
 
 .welcome-section {
@@ -62,67 +64,83 @@
 
 .welcome-section h2 {
   font-size: 2rem;
-  color: #212529;
-  margin-bottom: 0.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+  margin-top: 5rem;
 }
 
 .welcome-section p {
-  color: #6c757d;
-  font-size: 1.1rem;
+  font-size: 1.125rem;
+  color: #666;
 }
 
 .action-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: flex;
   gap: 2rem;
-  margin-bottom: 3rem;
+  justify-content: center;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .action-card {
-  background: white;
+  flex: 1;
+  max-width: 320px;
   padding: 2rem;
-  border-radius: 1rem;
+  background: white;
+  border-radius: 12px;
   text-decoration: none;
   color: inherit;
-  transition: all 0.3s ease;
-  border: 1px solid #e9ecef;
-  text-align: center;
+  transition: all 0.2s ease;
+  border: 1px solid #e0e0e0;
 }
 
 .action-card:hover {
-  border-color: #007BFF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: #1098F7;
 }
 
 .card-icon {
-  font-size: 2.5rem;
-  color: #007BFF;
-  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #1098F7;
+  margin-bottom: 1.5rem;
 }
 
 .action-card h3 {
-  margin: 0 0 0.5rem 0;
-  color: #212529;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #1a1a1a;
 }
 
 .action-card p {
-  color: #6c757d;
-  margin: 0;
+  font-size: 0.875rem;
+  color: #666;
+  line-height: 1.5;
 }
 
 @media (max-width: 768px) {
-  .dashboard-container {
-    padding: 1rem;
-  }
-  
   .action-cards {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
   }
-  
+
+  .action-card {
+    width: 100%;
+    max-width: 400px;
+  }
+
   .welcome-section h2 {
     font-size: 1.75rem;
   }
-  
+
   .welcome-section p {
     font-size: 1rem;
+  }
+
+  .dashboard-container {
+    padding: 2rem 1rem;
   }
 } 

@@ -15,20 +15,20 @@ function Dashboard() {
         </div>
 
         <div className="action-cards">
-          <Link to="/interviews/create" className="action-card">
+          <Link to="/create-interview" className="action-card">
             <div className="card-icon">
               <i className="fas fa-plus-circle"></i>
             </div>
             <h3>Create Interview</h3>
-            <p>Set up a new interview template with custom questions</p>
+            <p>Create a new interview and get a shareable code</p>
           </Link>
 
-          <Link to="/interviews/start" className="action-card">
+          <Link to="/access" className="action-card">
             <div className="card-icon">
-              <i className="fas fa-play-circle"></i>
+              <i className="fas fa-key"></i>
             </div>
-            <h3>Start Interview</h3>
-            <p>Begin a new interview session using existing templates</p>
+            <h3>Access Interview</h3>
+            <p>Enter an interview code to begin your session</p>
           </Link>
         </div>
       </div>

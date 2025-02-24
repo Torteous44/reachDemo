@@ -1,167 +1,252 @@
+/* Base font setup */
+:root {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+}
+
 .landing-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
   min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", sans-serif;
 }
 
 .demo-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 0;
+  padding: 1.5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .logo {
-  font-size: 24px;
-  font-weight: 600;
-  color: #007BFF;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-image {
+  height: 32px;
+  width: auto;
 }
 
 .demo-badge {
-  background-color: #e3f2fd;
-  color: #007BFF;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
+  background: #f0f7ff;
+  color: #1098F7;
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .hero-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  padding: 80px 0;
+  min-height: 60vh;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  padding: 2rem;
 }
 
 .hero-content {
-  max-width: 600px;
+  max-width: 480px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.hero-logo img {
+  height: 64px;
+  width: auto;
+  margin-bottom: 1.5rem;
 }
 
 .hero-title {
-  font-size: 48px;
+  font-size: 2.5rem;
   line-height: 1.2;
-  margin-bottom: 24px;
-  font-weight: 700;
+  margin-bottom: 2rem;
   color: #1a1a1a;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .emphasis {
-  font-style: italic;
-  color: #007BFF;
+  color: #000000;
+  font-weight: 700;
 }
 
 .hero-description {
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 1.6;
-  color: #555;
-  margin-bottom: 40px;
+  color: #666666;
+  margin-bottom: 2.5rem;
+  font-weight: 400;
 }
 
-.try-demo-button {
-  display: inline-block;
-  background-color: #007BFF;
-  color: white;
-  padding: 16px 32px;
-  border-radius: 8px;
-  font-size: 18px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 6px rgba(0, 123, 255, 0.1);
+.demo-info {
+  background: #f8f9fa;
+  padding: 4rem 2rem;
+  border-top: 1px solid #e9ecef;
 }
 
-.try-demo-button:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 123, 255, 0.2);
+.demo-info-content {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.hero-visual {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.demo-info h2 {
+  text-align: center;
+  color: #1a1a1a;
+  font-size: 2rem;
+  margin-bottom: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
-.visualizer-container {
-  width: 400px;
-  height: 400px;
-  position: relative;
+.demo-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
 }
 
-.demo-notice {
-  background-color: #f8f9fa;
+.feature-item {
+  background: white;
+  padding: 2rem;
   border-radius: 12px;
-  padding: 32px;
-  margin: 60px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
 }
 
-.demo-notice h2 {
-  color: #333;
-  margin-bottom: 16px;
+.feature-item:hover {
+  transform: translateY(-2px);
 }
 
-.demo-notice ul {
-  margin: 16px 0;
-  padding-left: 24px;
+.feature-item h3 {
+  color: #1098F7;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
-.demo-notice li {
-  margin: 8px 0;
-  color: #555;
-}
-
-.demo-disclaimer {
-  margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid #e1e1e1;
-  font-style: italic;
+.feature-item p {
   color: #666;
+  line-height: 1.6;
+  margin: 0;
+  font-weight: 400;
 }
 
-@media (max-width: 968px) {
-  .hero-section {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: 40px;
-    padding: 40px 0;
-  }
+.demo-note {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #f0f7ff;
+  border-radius: 12px;
+}
 
-  .hero-content {
-    margin: 0 auto;
-  }
+.demo-note p {
+  color: #1098F7;
+  font-size: 0.875rem;
+  margin: 0;
+  font-weight: 500;
+}
 
+.hero-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.hero-button {
+  padding: 0.625rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  border: 1px solid transparent;
+  font-family: "Inter", sans-serif;
+}
+
+.hero-button:not(.primary) {
+  background: white;
+  border-color: #e0e0e0;
+  color: #1a1a1a;
+}
+
+.hero-button:not(.primary):hover {
+  background: #f8f9fa;
+  border-color: #d0d0d0;
+}
+
+.hero-button.primary {
+  background: #1098F7;
+  color: white;
+}
+
+.hero-button.primary:hover {
+  background: #0d86e1;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(16, 152, 247, 0.15);
+}
+
+@media (max-width: 768px) {
   .hero-title {
-    font-size: 36px;
+    font-size: 2.5rem;
+    font-weight: 700;
   }
 
-  .hero-description {
-    font-size: 18px;
+  .demo-info {
+    padding: 3rem 1.5rem;
   }
 
-  .visualizer-container {
-    width: 300px;
-    height: 300px;
+  .demo-info h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+  }
+
+  .demo-features {
+    gap: 1.5rem;
+  }
+
+  .feature-item {
+    padding: 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
-  .landing-container {
-    padding: 16px;
-  }
-
   .hero-title {
-    font-size: 32px;
+    font-size: 2rem;
   }
 
-  .hero-description {
-    font-size: 16px;
+  .demo-info {
+    padding: 2rem 1rem;
   }
 
-  .try-demo-button {
-    padding: 14px 28px;
-    font-size: 16px;
+  .demo-info h2 {
+    font-size: 1.5rem;
+  }
+
+  .feature-item {
+    padding: 1.25rem;
+  }
+
+  .feature-item h3 {
+    font-size: 1.125rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0 1rem;
+  }
+
+  .hero-button {
+    width: 100%;
+    min-width: auto;
   }
 } 

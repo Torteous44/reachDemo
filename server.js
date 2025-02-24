@@ -2,14 +2,17 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-// Serve static files
-app.use(express.static('build'));
+// First, serve any static files
+app.use(express.static(path.join(__dirname, 'build')));
 
-// Handle ALL requests
-app.get('*', (req, res) => {
-  res.set('Content-Type', 'text/html');
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// Then, handle ALL routes by serving index.html
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err);
+    }
+  });
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port); 
+app.listen(port, () => console.log(`Server running on port ${port}`)); 

@@ -96,7 +96,7 @@ function CreateInterview() {
       <Navbar />
       <div className="create-interview">
         <div className="create-container">
-          <div className="card-header">
+
             <button 
               onClick={() => navigate('/dashboard')} 
               className="back-button"
@@ -107,8 +107,9 @@ function CreateInterview() {
                 className="back-icon"
               />
             </button>
-            <h1>Create Interview</h1>
-          </div>
+            <div className="header-text">
+              <h1>Create Interview</h1>
+            </div>
           
           {error && <div className="error-message">{error}</div>}
           

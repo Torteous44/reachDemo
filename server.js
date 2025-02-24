@@ -5,8 +5,9 @@ const app = express();
 // Serve static files
 app.use(express.static('build'));
 
-// IMPORTANT: This route needs to be last
-app.get('/*', (req, res) => {
+// Handle ALL requests
+app.get('*', (req, res) => {
+  res.set('Content-Type', 'text/html');
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 

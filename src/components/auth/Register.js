@@ -28,6 +28,7 @@ function Register() {
     try {
       await register(formData.email, formData.password);
       closeModal();
+      window.location.href = '/dashboard';
     } catch (err) {
       setError('Error creating account');
     } finally {

@@ -7,7 +7,8 @@ function Register() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    organization_name: ''
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -26,16 +27,31 @@ function Register() {
     setError('');
 
     try {
-      const result = await register(formData.email, formData.password);
-      if (result.access_token) {
-        localStorage.setItem('token', result.access_token);
-        closeModal();
-        window.location.href = '/dashboard';
-      } else {
-        setError('Registration successful but login failed');
+      const response = await fetch("https://demobackend-p2e1.onrender.com/client-auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          organization_name: formData.organization_name
+        })
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.detail || "Registration failed");
       }
+      
+      localStorage.setItem("token", data.access_token);
+      if (data.client) {
+        localStorage.setItem("user_info", JSON.stringify(data.client));
+      }
+      
+      closeModal();
+      window.location.href = '/dashboard';
     } catch (err) {
-      setError('Error creating account');
+      setError(err.message || 'Error creating account');
       console.error('Registration error:', err);
     } finally {
       setIsLoading(false);
@@ -50,8 +66,8 @@ function Register() {
 
   return (
     <div className="auth-form">
-      <h2 className="auth-title">Create Account</h2>
-      <p className="auth-subtitle">Sign up to get started</p>
+      <h2 className="auth-title">Create Client Account</h2>
+      <p className="auth-subtitle">Register your organization to get started</p>
       
       {error && (
         <div className="auth-error">
@@ -70,6 +86,18 @@ function Register() {
             placeholder="Enter your email"
             required
             autoComplete="email"
+          />
+        </div>
+
+        <div className="auth-input-group">
+          <label className="auth-label">Organization Name</label>
+          <input
+            className="auth-input"
+            type="text"
+            value={formData.organization_name}
+            onChange={(e) => setFormData({...formData, organization_name: e.target.value})}
+            placeholder="Enter your organization name"
+            required
           />
         </div>
 
@@ -98,13 +126,13 @@ function Register() {
             autoComplete="new-password"
           />
         </div>
-
+        
         <button 
           type="submit" 
           className="auth-button"
           disabled={isLoading}
         >
-          {isLoading ? "Creating account..." : "Create account"}
+          {isLoading ? "Creating account..." : "Register Organization"}
         </button>
       </form>
 

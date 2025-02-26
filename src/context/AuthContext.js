@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const resp = await fetch("https://demobackend-p2e1.onrender.com/auth/login", {
+      const resp = await fetch("https://demobackend-p2e1.onrender.com/client-auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -33,9 +33,9 @@ export const AuthProvider = ({ children }) => {
       const data = await resp.json();
       localStorage.setItem("token", data.access_token);
       
-      if (data.user) {
-        localStorage.setItem("user_info", JSON.stringify(data.user));
-        setUser(data.user);
+      if (data.client) {
+        localStorage.setItem("user_info", JSON.stringify(data.client));
+        setUser(data.client);
       }
 
       return { success: true };
@@ -44,12 +44,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (email, password) => {
+  const register = async (email, password, organization_name) => {
     try {
-      const resp = await fetch("https://demobackend-p2e1.onrender.com/auth/register", {
+      const resp = await fetch("https://demobackend-p2e1.onrender.com/client-auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password, organization_name })
       });
 
       if (!resp.ok) {
@@ -60,9 +60,9 @@ export const AuthProvider = ({ children }) => {
       const data = await resp.json();
       localStorage.setItem("token", data.access_token);
       
-      if (data.user) {
-        localStorage.setItem("user_info", JSON.stringify(data.user));
-        setUser(data.user);
+      if (data.client) {
+        localStorage.setItem("user_info", JSON.stringify(data.client));
+        setUser(data.client);
       }
 
       return data;

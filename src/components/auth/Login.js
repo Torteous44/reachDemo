@@ -15,19 +15,29 @@ function Login() {
     setError("");
 
     try {
-      const result = await login(email, password);
-      console.log("Login result:", result); // Debug log
-      
-      if (result.success) {
-        closeModal();
-        // Force a reload to ensure fresh state
-        window.location.href = '/dashboard';
-      } else {
-        setError(result.error || "Failed to login");
+      const response = await fetch("https://demobackend-p2e1.onrender.com/client-auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || "Invalid credentials");
       }
+
+      const data = await response.json();
+      localStorage.setItem("token", data.access_token);
+      
+      if (data.client) {
+        localStorage.setItem("user_info", JSON.stringify(data.client));
+      }
+      
+      closeModal();
+      window.location.href = '/dashboard';
     } catch (err) {
-      console.error("Login error:", err); // Debug log
-      setError("Failed to login. Please try again.");
+      console.error("Login error:", err);
+      setError(err.message || "Failed to login. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -41,8 +51,8 @@ function Login() {
 
   return (
     <div className="auth-form">
-      <h2 className="auth-title">Welcome back</h2>
-      <p className="auth-subtitle">Sign in to your account to continue</p>
+      <h2 className="auth-title">Client Login</h2>
+      <p className="auth-subtitle">Sign in to your organization account</p>
       
       {error && (
         <div className="auth-error">

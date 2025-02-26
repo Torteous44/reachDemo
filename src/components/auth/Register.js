@@ -29,7 +29,12 @@ function Register() {
     try {
       const response = await fetch("https://demobackend-p2e1.onrender.com/client-auth/register", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Origin": window.location.origin
+        },
+        credentials: 'include',
         body: JSON.stringify({
           email: formData.email,
           password: formData.password,
